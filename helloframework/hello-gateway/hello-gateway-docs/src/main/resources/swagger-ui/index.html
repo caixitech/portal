@@ -1,0 +1,142 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16"/>
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+
+        .md-content {
+            border: 1px solid #dddee1;
+            border-color: #e9eaec;
+            padding: 0 20px;
+        }
+
+        .md-content code {
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: block;
+        }
+
+        .md-content code, .md-content tt {
+            margin: 0 2px;
+            padding: 0 5px;
+            white-space: nowrap;
+            border: 1px solid #eaeaea;
+            background-color: #f8f8f8;
+            border-radius: 3px;
+        }
+
+        .md-content pre code, pre tt {
+            background-color: transparent;
+            border: none;
+        }
+
+        .md-content pre code {
+            margin: 0;
+            padding: 0;
+            white-space: pre;
+            border: none;
+            background: transparent;
+        }
+
+        .md-content .highlight pre, .md-content pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            font-size: 13px;
+            line-height: 19px;
+            overflow: auto;
+            padding: 6px 10px;
+            border-radius: 3px;
+        }
+
+        .md-content table tr {
+            border-top: 1px solid #ccc;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .md-content table tr:nth-child(2n) {
+            background-color: #f8f8f8;
+        }
+
+        .md-content table tr td, .md-content table tr th {
+            border: 1px solid #ccc;
+            margin: 0;
+            padding: 6px 13px;
+            font-size: 12px;
+        }
+
+        .md-content table tr th {
+            font-weight: 700;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="swagger-ui"></div>
+<div class="swagger-ui">
+    <div class="wrapper">
+        <div id="basic" class="md-content">
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+<script>
+    var converter = new showdown.Converter();
+    converter.setOption('tables', 'true');
+    converter.setOption('simplifiedAutoLink', 'true');
+
+    $.get('./basic.md', function (response, status, xhr) {
+        $("#basic").html(converter.makeHtml(response));
+    });
+</script>
+
+<script src="./swagger-ui-bundle.js" charset="UTF-8"></script>
+<script src="./swagger-ui-standalone-preset.js" charset="UTF-8"></script>
+<script>
+    window.onload = function () {
+        // Begin Swagger UI call region
+        const ui = SwaggerUIBundle({
+            url: "./swagger.json",
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout"
+        })
+        // End Swagger UI call region
+
+        window.ui = ui
+    }
+</script>
+</body>
+</html>

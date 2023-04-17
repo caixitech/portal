@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:gw.properties" ignore-unresolvable="true"/>
+
+    <bean class="org.helloframework.redis.core.RedisOpTemplate">
+        <constructor-arg type="org.helloframework.redis.spring.SpringOpRedis" ref="SpringOpRedis"/>
+    </bean>
+
+    <bean id="SpringOpRedis" class="org.helloframework.redis.spring.SpringOpRedis">
+        <property name="redisGroups">
+            <list>
+                <bean class="org.helloframework.redis.core.RedisGroup">
+                    <property name="name" value="GA"/>
+                    <property name="num" value="20"/>
+                    <property name="redisConfigs">
+                        <list>
+                            <bean class="org.helloframework.redis.spring.SpringRedisConfig">
+                                <property name="start" value="1"/>
+                                <property name="end" value="10"/>
+                                <property name="redis" ref="redisTemplate"/>
+                            </bean>
+                            <bean class="org.helloframework.redis.spring.SpringRedisConfig">
+                                <property name="start" value="11"/>
+                                <property name="end" value="20"/>
+                                <property name="redis" ref="redisTemplate"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.helloframework.redis.core.RedisGroup">
+                    <property name="name" value="GB"/>
+                    <property name="num" value="20"/>
+                    <property name="redisConfigs">
+                        <list>
+                            <bean class="org.helloframework.redis.spring.SpringRedisConfig">
+                                <property name="start" value="1"/>
+                                <property name="end" value="10"/>
+                                <property name="redis" ref="redisTemplate"/>
+                            </bean>
+                            <bean class="org.helloframework.redis.spring.SpringRedisConfig">
+                                <property name="start" value="11"/>
+                                <property name="end" value="20"/>
+                                <property name="redis" ref="redisTemplate"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--    &lt;!&ndash;哨兵配置&ndash;&gt;-->
+    <!--    <bean id="redisSentinelConfiguration"-->
+    <!--          class="org.springframework.data.redis.connection.RedisSentinelConfiguration">-->
+    <!--        <property name="master">-->
+    <!--            <bean class="org.springframework.data.redis.connection.RedisNode">-->
+    <!--                <property name="name" value="${redis.sentinel.master.name}">-->
+    <!--                </property>-->
+    <!--            </bean>-->
+    <!--        </property>-->
+    <!--        <property name="sentinels">-->
+    <!--            <set>-->
+    <!--                <bean class="org.springframework.data.redis.connection.RedisNode">-->
+    <!--                    <constructor-arg name="host" value="${redis.sentinel1.host}"/>-->
+    <!--                    <constructor-arg name="port" value="${redis.sentinel1.port}"/>-->
+    <!--                </bean>-->
+    <!--                <bean class="org.springframework.data.redis.connection.RedisNode">-->
+    <!--                    <constructor-arg name="host" value="${redis.sentinel2.host}"/>-->
+    <!--                    <constructor-arg name="port" value="${redis.sentinel2.port}"/>-->
+    <!--                </bean>-->
+    <!--                <bean class="org.springframework.data.redis.connection.RedisNode ">-->
+    <!--                    <constructor-arg name="host" value="${redis.sentinel3.host}"/>-->
+    <!--                    <constructor-arg name="port" value="${redis.sentinel3.port}"/>-->
+    <!--                </bean>-->
+    <!--            </set>-->
+    <!--        </property>-->
+    <!--    </bean>-->
+
+    <!--配置jedis连接池-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+          p:maxIdle="${redis.maxIdle}"
+          p:maxTotal="${redis.maxTotal}"
+          p:maxWaitMillis="${redis.maxWaitMillis}"
+          p:blockWhenExhausted="${redis.blockWhenExhausted}"
+          p:testOnBorrow="${redis.testOnBorrow}"
+          p:testWhileIdle="${redis.testWhileIdle}"/>
+
+    <bean id="redisConnectionFactorySentinel"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:password="">
+        <!--        <constructor-arg name="sentinelConfig" ref="redisSentinelConfiguration"/>-->
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+    </bean>
+
+    <!-- redis template definition -->
+
+    <bean name="helloRedisSerializer" class="org.helloframework.redis.serializer.HelloRedisSerializer"/>
+    <!-- redis template definition -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="redisConnectionFactorySentinel"
+          p:keySerializer-ref="helloRedisSerializer"
+          p:valueSerializer-ref="helloRedisSerializer"
+          p:hashKeySerializer-ref="helloRedisSerializer"
+          p:hashValueSerializer-ref="helloRedisSerializer"/>
+    <bean id="redisTemplate2" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="redisConnectionFactorySentinel"
+          p:keySerializer-ref="helloRedisSerializer"
+          p:valueSerializer-ref="helloRedisSerializer"
+          p:hashKeySerializer-ref="helloRedisSerializer"
+          p:hashValueSerializer-ref="helloRedisSerializer"/>
+    <bean id="redisTemplate3" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="redisConnectionFactorySentinel"
+          p:keySerializer-ref="helloRedisSerializer"
+          p:valueSerializer-ref="helloRedisSerializer"
+          p:hashKeySerializer-ref="helloRedisSerializer"
+          p:hashValueSerializer-ref="helloRedisSerializer"/>
+    <bean id="redisTemplate4" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="redisConnectionFactorySentinel"
+          p:keySerializer-ref="helloRedisSerializer"
+          p:valueSerializer-ref="helloRedisSerializer"
+          p:hashKeySerializer-ref="helloRedisSerializer"
+          p:hashValueSerializer-ref="helloRedisSerializer"/>
+
+</beans>

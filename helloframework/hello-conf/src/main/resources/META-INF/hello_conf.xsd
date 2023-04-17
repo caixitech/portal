@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.hellosource.org/schema/hello_conf"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.hellosource.org/schema/hello_conf"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool"/>
+    <xsd:annotation>
+        <xsd:documentation>
+            <![CDATA[ Namespace support for the hello api services provided by hello framework. ]]></xsd:documentation>
+    </xsd:annotation>
+    <xsd:element name="conf">
+        <xsd:complexType>
+            <xsd:attribute name="keys" type="xsd:string" use="required"/>
+            <xsd:attribute name="group" type="xsd:string" use="required"/>
+            <xsd:attribute name="redis" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
